@@ -12,6 +12,12 @@ pool:
 steps:
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
+
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.x'
+  displayName: 'Use Python 3.x'
+
 - task: Bash@3
   inputs:
     targetType: 'inline'
@@ -35,6 +41,36 @@ steps:
       $ANDROID_HOME/platform-tools/adb devices
       
       echo "Emulator started"
+  displayName: 'Start Android Emulator'
+
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Install APK
+      $ANDROID_HOME/platform-tools/adb install WikipediaSample.apk
+      
+      # Extract package name from APK
+      PACKAGE_NAME=$($ANDROID_HOME/build-tools/30.0.3/aapt dump badging WikipediaSample.apk | grep package:\ name | awk -F"'" '{print $2}')
+      echo "Package Name: $PACKAGE_NAME"
+
+      # Launch APK
+      $ANDROID_HOME/platform-tools/adb shell monkey -p $PACKAGE_NAME -c android.intent.category.LAUNCHER 1
+  displayName: 'Install and Launch APK'
+  
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Take a screenshot
+      $ANDROID_HOME/platform-tools/adb exec-out screencap -p > $(Build.ArtifactStagingDirectory)/screenshot.png
+  displayName: 'Take Screenshot'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: '$(Build.ArtifactStagingDirectory)/screenshot.png'
+    artifactName: 'screenshot'
+  displayName: 'Publish Screenshot'
 
 - script: |
     echo Done
