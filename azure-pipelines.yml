@@ -20,21 +20,21 @@ steps:
       echo 'Hello world'
       
       # Install AVD files
-      echo "y" | C:\Users\hghadir\AppData\Local\Android\Sdk\tools\bin\sdkmanager.bat --install 'system-images;android-27;google_apis;x86'
+      echo "y" | C:/Users/hghadir/AppData/Local/Android/Sdk/tools/bin/sdkmanager.bat --install 'system-images;android-27;google_apis;x86'
       
       # Create emulator
-      echo "no" | C:\Users\hghadir\AppData\Local\Android\Sdk\tools\bin\avdmanager.bat create avd -n xamarin_android_emulator -k 'system-images;android-27;google_apis;x86' --force
+      echo "no" | C:/Users/hghadir/AppData/Local/Android/Sdk/tools/bin/avdmanager.bat create avd -n xamarin_android_emulator -k 'system-images;android-27;google_apis;x86' --force
       
-      C:\Users\hghadir\AppData\Local\Android\Sdk\emulator\emulator.exe -list-avds
+      C:/Users/hghadir/AppData/Local/Android/Sdk/emulator/emulator.exe -list-avds
       
       echo "Starting emulator"
       
       # Start emulator in background
       
-      nohup C:\Users\hghadir\AppData\Local\Android\Sdk\emulator\emulator.exe -avd xamarin_android_emulator -no-snapshot > /dev/null 2>&1 &
-      C:\Users\hghadir\AppData\Local\Android\Sdk\platform-tools\adb.exe wait-for-device shell 'while [[ -z $(getprop sys.boot_completed | tr -d '\r') ]]; do sleep 1; done; input keyevent 82'
+      nohup C:/Users/hghadir/AppData/Local/Android/Sdk/emulator/emulator.exe -avd xamarin_android_emulator -no-snapshot > /dev/null 2>&1 &
+      C:/Users/hghadir/AppData/Local/Android/Sdk/platform-tools/adb.exe wait-for-device shell 'while [[ -z $(getprop sys.boot_completed | tr -d '/r') ]]; do sleep 1; done; input keyevent 82'
       
-      C:\Users\hghadir\AppData\Local\Android\Sdk\platform-tools\adb.exe devices
+      C:/Users/hghadir/AppData/Local/Android/Sdk/platform-tools/adb.exe devices
       
       echo "Emulator started"
 
