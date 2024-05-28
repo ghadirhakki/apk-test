@@ -25,8 +25,11 @@ steps:
       #!/usr/bin/env bash
       
       # Install AVD files
+      echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install 'cmdline-tools;latest'
+      echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install 'platform-tools'
+      echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install 'emulator'
       echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install 'system-images;android-27;google_apis;x86'
-      
+            
       # Create emulator
       echo "no" | $ANDROID_HOME/tools/bin/avdmanager create avd -n xamarin_android_emulator -k 'system-images;android-27;google_apis;x86' --force
       
