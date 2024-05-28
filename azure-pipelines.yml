@@ -1,0 +1,43 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- script: echo Hello, world!
+  displayName: 'Run a one-line script'
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      #!/usr/bin/env bash
+      echo 'Hello world'
+      
+      # Install AVD files
+      echo "y" | C:/Users/hghadir/AppData/Local/Android/Sdk/tools/bin/sdkmanager --install 'system-images;android-27;google_apis;x86'
+      
+      # Create emulator
+      echo "no" | C:/Users/hghadir/AppData/Local/Android/Sdk/tools/bin/avdmanager create avd -n xamarin_android_emulator -k 'system-images;android-27;google_apis;x86' --force
+      
+      C:/Users/hghadir/AppData/Local/Android/Sdk/emulator/emulator -list-avds
+      
+      echo "Starting emulator"
+      
+      # Start emulator in background
+      
+      nohup C:/Users/hghadir/AppData/Local/Android/Sdk/emulator/emulator -avd xamarin_android_emulator -no-snapshot > /dev/null 2>&1 &
+      C:\Users\hghadir\AppData\Local\Android\Sdk\platform-tools/adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed | tr -d '\r') ]]; do sleep 1; done; input keyevent 82'
+      
+      C:\Users\hghadir\AppData\Local\Android\Sdk\platform-tools/adb devices
+      
+      echo "Emulator started"
+
+- script: |
+    echo Done
+  displayName: 'Run a multi-line script'
